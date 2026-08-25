@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0"
+	/>
+
+	<meta
+		name="description"
+		content="Kossman's Offhand Fix - smoother offhand stack handling for Minecraft."
+	/>
+
+	<meta
+		name="theme-color"
+		content="#111315"
+	/>
+
+	<title>Kossman's Offhand Fix</title>
+
+	<link
+		rel="icon"
+		type="image/png"
+		href="./assets/logo.png"
+	/>
+
+	<link
+		rel="stylesheet"
+		href="./styles.css"
+	/>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="site-header__inner">
+			<a
+				class="brand"
+				href="./index.html"
+			>
+				Kossman's Offhand Fix
+			</a>
+
+			<nav
+				class="nav"
+				aria-label="Main navigation"
+			>
+				<a href="https://dangeroni-labs.github.io/">
+					Dangeroni Labs
+				</a>
+
+				<a
+					href="https://github.com/Dangeroni-Labs/offhand-fix"
+					target="_blank"
+					rel="noreferrer"
+				>
+					GitHub
+				</a>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<div class="page">
+			<section class="hero">
+				<div class="hero-copy">
+					<p class="eyebrow">
+						Minecraft QoL fix
+					</p>
+
+					<h1>
+						Your offhand,
+						<br />
+						just smarter.
+					</h1>
+
+					<p class="hero-description">
+						Kossman's Offhand Fix makes matching item stacks refill
+						the offhand naturally instead of forcing unnecessary
+						swaps and inventory shuffling.
+					</p>
+
+					<div class="hero-actions">
+						<a
+							class="button button-primary"
+							href="https://github.com/Dangeroni-Labs/offhand-fix/releases"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Download
+						</a>
+
+						<a
+							class="button"
+							href="https://github.com/Dangeroni-Labs/offhand-fix"
+							target="_blank"
+							rel="noreferrer"
+						>
+							Source ↗
+						</a>
+					</div>
+				</div>
+
+				<div class="hero-meta">
+					<div>
+						<span>Version</span>
+						<strong>0.1.0</strong>
+					</div>
+
+					<div>
+						<span>Minecraft</span>
+						<strong>26.2</strong>
+					</div>
+
+					<div>
+						<span>Loader</span>
+						<strong>Fabric, NeoForge</strong>
+					</div>
+
+					<div>
+						<span>License</span>
+						<strong>MIT</strong>
+					</div>
+				</div>
+			</section>
+
+			<section class="section demo">
+				<div class="section-heading">
+					<p class="eyebrow">
+						Demo
+					</p>
+
+					<h2>
+						No extra inventory dance.
+					</h2>
+
+					<p>
+						Matching stacks move straight into the offhand when
+						there is room, while unrelated interactions keep their
+						normal vanilla behavior.
+					</p>
+				</div>
+
+				<figure class="demo-frame">
+					<img
+						src="./assets/offhand-fix-demo.gif"
+						alt="Kossman's Offhand Fix gameplay demonstration"
+					/>
+				</figure>
+			</section>
+
+			<section class="section">
+				<div class="section-heading">
+					<p class="eyebrow">
+						How it works
+					</p>
+
+					<h2>
+						Two interactions. One simple rule.
+					</h2>
+
+					<p>
+						If the offhand already contains a compatible stack
+						and there is still room, refill it first.
+					</p>
+				</div>
+
+				<div class="steps">
+					<article class="step">
+						<span>01</span>
+
+						<h3>
+							Shift-click
+						</h3>
+
+						<p>
+							Shift-click a matching stack in your inventory or
+							a supported container and it fills the existing
+							offhand stack first.
+						</p>
+					</article>
+
+					<article class="step">
+						<span>02</span>
+
+						<h3>
+							Press F
+						</h3>
+
+						<p>
+							When the main hand or hovered inventory slot matches
+							the offhand, the swap key refills the stack before
+							performing a normal swap.
+						</p>
+					</article>
+
+					<article class="step">
+						<span>03</span>
+
+						<h3>
+							Keep vanilla
+						</h3>
+
+						<p>
+							If refilling is not possible, Minecraft behaves
+							exactly as usual. Different items, full stacks and
+							non-stackable items are left alone.
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-heading">
+					<p class="eyebrow">
+						Example
+					</p>
+
+					<h2>
+						Refill instead of swap.
+					</h2>
+				</div>
+
+				<div class="stack-example">
+					<div class="stack-state">
+						<p class="example-label">
+							Before
+						</p>
+
+						<div class="inventory-row">
+							<div class="inventory-slot">
+								<span class="slot-label">Main</span>
+								<strong>Bread ×20</strong>
+							</div>
+
+							<div class="inventory-arrow">
+								F
+							</div>
+
+							<div class="inventory-slot inventory-slot--offhand">
+								<span class="slot-label">Offhand</span>
+								<strong>Bread ×50</strong>
+							</div>
+						</div>
+					</div>
+
+					<div class="stack-divider">
+						<span>→</span>
+					</div>
+
+					<div class="stack-state">
+						<p class="example-label">
+							After
+						</p>
+
+						<div class="inventory-row">
+							<div class="inventory-slot">
+								<span class="slot-label">Main</span>
+								<strong>Bread ×6</strong>
+							</div>
+
+							<div class="inventory-arrow">
+								+
+							</div>
+
+							<div class="inventory-slot inventory-slot--offhand">
+								<span class="slot-label">Offhand</span>
+								<strong>Bread ×64</strong>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-heading">
+					<p class="eyebrow">
+						Behavior
+					</p>
+
+					<h2>
+						Small by design.
+					</h2>
+				</div>
+
+				<div class="feature-list">
+					<article>
+						<span>01</span>
+
+						<h3>
+							Vanilla-friendly
+						</h3>
+
+						<p>
+							The mod only changes interactions where a compatible
+							offhand stack can actually be refilled.
+						</p>
+					</article>
+
+					<article>
+						<span>02</span>
+
+						<h3>
+							Stack-safe
+						</h3>
+
+						<p>
+							Item components and normal Minecraft stack
+							compatibility rules are respected. Different stacks
+							are never force-merged.
+						</p>
+					</article>
+
+					<article>
+						<span>03</span>
+
+						<h3>
+							Smooth
+						</h3>
+
+						<p>
+							Inventory prediction is handled so compatible
+							shift-clicks appear directly in the offhand without
+							temporary slot flicker.
+						</p>
+					</article>
+
+					<article>
+						<span>04</span>
+
+						<h3>
+							Multiplayer-safe
+						</h3>
+
+						<p>
+							Inventory changes remain server-authoritative and
+							synchronize normally in singleplayer and multiplayer.
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="section story">
+				<div class="story-copy">
+					<p class="eyebrow">
+						Why
+					</p>
+
+					<h2>
+						A tiny fix for a tiny annoyance.
+					</h2>
+
+					<p>
+						The default offhand behavior kept getting in the way,
+						so I made the interaction work the way I always expected
+						it to.
+					</p>
+				</div>
+			</section>
+
+			<footer class="site-footer">
+				<span>
+					A Dangeroni Labs project
+				</span>
+
+				<div>
+					<a href="https://dangeroni-labs.github.io/">
+						Dangeroni Labs
+					</a>
+
+					<a
+						href="https://github.com/Dangeroni-Labs/offhand-fix"
+						target="_blank"
+						rel="noreferrer"
+					>
+						GitHub
+					</a>
+				</div>
+			</footer>
+		</div>
+	</main>
+</body>
+</html>
