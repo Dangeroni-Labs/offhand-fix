@@ -3,25 +3,20 @@
 	"id": "offhand_fix",
 	"version": "${version}",
 	"name": "Kossman's Offhand Fix",
-	"description": "Fixes offhand stack refilling for shift-click and swap-hand interactions!",
+	"description": "Improves offhand stack handling by refilling compatible stacks during shift-click and swap-hand interactions.",
 	"authors": ["Dangeroni Labs"],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Dangeroni-Labs/offhand-fix",
+		"issues": "https://github.com/Dangeroni-Labs/offhand-fix/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/kossmans-offhand-fix/icon.png",
+	"icon": "assets/offhand_fix/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": ["dev.dangeroni.offhandfix.KossmanSOffhandFix"],
-		"client": ["dev.dangeroni.offhandfix.client.KossmanSOffhandFixClient"]
+		"main": ["dev.dangeroni.offhandfix.OffhandFixMod"]
 	},
 	"mixins": [
-		"kossmans-offhand-fix.mixins.json",
-		{
-			"config": "kossmans-offhand-fix.client.mixins.json",
-			"environment": "client"
-		}
+		"offhand_fix.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
