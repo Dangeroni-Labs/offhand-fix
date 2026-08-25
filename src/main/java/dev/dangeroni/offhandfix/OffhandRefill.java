@@ -11,16 +11,29 @@ public final class OffhandRefill {
 		return !offhandStack.isEmpty()
 			&& !sourceStack.isEmpty()
 			&& offhandStack.getMaxStackSize() > 1
-			&& offhandStack.getCount() < offhandStack.getMaxStackSize()
 			&& ItemStack.isSameItemSameComponents(offhandStack, sourceStack);
 	}
 
-	public static int refillOffhand(ItemStack offhandStack, ItemStack sourceStack) {
+	public static int calculateTransferAmount(ItemStack offhandStack, ItemStack sourceStack) {
 		if (!canRefillOffhand(offhandStack, sourceStack)) {
 			return 0;
 		}
 
-		int transferable = Math.min(sourceStack.getCount(), offhandStack.getMaxStackSize() - offhandStack.getCount());
+		int space = offhandStack.getMaxStackSize() - offhandStack.getCount();
+		if (space <= 0) {
+			return 0;
+		}
+
+		int transferable = Math.min(sourceStack.getCount(), space);
+		if (transferable <= 0) {
+			return 0;
+		}
+
+		return transferable;
+	}
+
+	public static int refillOffhand(ItemStack offhandStack, ItemStack sourceStack) {
+		int transferable = calculateTransferAmount(offhandStack, sourceStack);
 		if (transferable <= 0) {
 			return 0;
 		}
