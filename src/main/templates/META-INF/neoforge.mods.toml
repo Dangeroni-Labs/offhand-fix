@@ -1,7 +1,7 @@
 
 license="${mod_license}"
 
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+issueTrackerURL="${mod_issues_url}"
 
 [[mods]] #mandatory
 
@@ -13,16 +13,14 @@ displayName="${mod_name}" #mandatory
 
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+displayURL="${mod_repository_url}"
 
 #logoFile="examplemod.png" #optional
 
-#credits="" #optional
-
-#authors=""
+authors="${mod_authors}"
 
 description='''
-Example mod description.
+${mod_description}
 '''
 
 [[mixins]]

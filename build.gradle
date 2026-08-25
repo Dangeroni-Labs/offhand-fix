@@ -23,7 +23,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = "offhand-fix"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -82,6 +82,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+            mod_repository_url     : mod_repository_url,
+            mod_issues_url         : mod_issues_url,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
