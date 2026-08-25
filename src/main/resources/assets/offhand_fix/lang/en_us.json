@@ -1,0 +1,13 @@
+{
+  "itemGroup.offhand_fix": "Example Mod Tab",
+  "block.offhand_fix.example_block": "Example Block",
+  "item.offhand_fix.example_item": "Example Item",
+
+  "offhand_fix.configuration.title": "Kossman's Offhand Fix Configs",
+  "offhand_fix.configuration.section.offhand_fix.common.toml": "Kossman's Offhand Fix Configs",
+  "offhand_fix.configuration.section.offhand_fix.common.toml.title": "Kossman's Offhand Fix Configs",
+  "offhand_fix.configuration.items": "Item List",
+  "offhand_fix.configuration.logDirtBlock": "Log Dirt Block",
+  "offhand_fix.configuration.magicNumberIntroduction": "Magic Number Text",
+  "offhand_fix.configuration.magicNumber": "Magic Number"
+}
