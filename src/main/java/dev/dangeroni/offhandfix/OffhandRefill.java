@@ -15,19 +15,22 @@ public final class OffhandRefill {
 			&& ItemStack.isSameItemSameComponents(offhandStack, sourceStack);
 	}
 
-	public static boolean tryRefillOffhand(Player player, ItemStack sourceStack) {
-		ItemStack offhandStack = player.getOffhandItem();
+	public static int refillOffhand(ItemStack offhandStack, ItemStack sourceStack) {
 		if (!canRefillOffhand(offhandStack, sourceStack)) {
-			return false;
+			return 0;
 		}
 
 		int transferable = Math.min(sourceStack.getCount(), offhandStack.getMaxStackSize() - offhandStack.getCount());
 		if (transferable <= 0) {
-			return false;
+			return 0;
 		}
 
 		offhandStack.grow(transferable);
 		sourceStack.shrink(transferable);
-		return true;
+		return transferable;
+	}
+
+	public static boolean tryRefillOffhand(Player player, ItemStack sourceStack) {
+		return refillOffhand(player.getOffhandItem(), sourceStack) > 0;
 	}
 }

@@ -4,6 +4,7 @@ import dev.dangeroni.offhandfix.OffhandRefill;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
@@ -25,8 +26,14 @@ abstract class AbstractContainerMenuMixin {
 	public abstract void broadcastChanges();
 
 	@Inject(method = "clicked", at = @At("HEAD"), cancellable = true)
-	private void offhandfix$refillOffhandOnQuickMove(int slotId, int button, ContainerInput containerInput, Player player, CallbackInfo ci) {
-		if (!(player instanceof ServerPlayer) || containerInput != ContainerInput.QUICK_MOVE || slotId < 0 || slotId >= this.slots.size()) {
+	private void offhandfix$refillOffhandBeforeVanillaSlotAction(int slotId, int button, ContainerInput containerInput, Player player, CallbackInfo ci) {
+		if (!(player instanceof ServerPlayer) || slotId < 0 || slotId >= this.slots.size()) {
+			return;
+		}
+
+		boolean quickMove = containerInput == ContainerInput.QUICK_MOVE;
+		boolean offhandSwap = containerInput == ContainerInput.SWAP && button == Inventory.SLOT_OFFHAND;
+		if (!quickMove && !offhandSwap) {
 			return;
 		}
 
@@ -36,18 +43,32 @@ abstract class AbstractContainerMenuMixin {
 		}
 
 		ItemStack sourceStack = slot.getItem();
-		if (!OffhandRefill.tryRefillOffhand(player, sourceStack)) {
+		int transferred = OffhandRefill.refillOffhand(player.getOffhandItem(), sourceStack);
+		if (transferred <= 0) {
+			return;
+		}
+
+		if (quickMove) {
+			if (sourceStack.isEmpty()) {
+				slot.setByPlayer(ItemStack.EMPTY);
+				slot.onTake(player, ItemStack.EMPTY);
+				this.broadcastChanges();
+				ci.cancel();
+			} else {
+				slot.setChanged();
+			}
+
 			return;
 		}
 
 		if (sourceStack.isEmpty()) {
 			slot.setByPlayer(ItemStack.EMPTY);
 			slot.onTake(player, ItemStack.EMPTY);
-			this.broadcastChanges();
-			ci.cancel();
-			return;
+		} else {
+			slot.setChanged();
 		}
 
-		slot.setChanged();
+		this.broadcastChanges();
+		ci.cancel();
 	}
 }
