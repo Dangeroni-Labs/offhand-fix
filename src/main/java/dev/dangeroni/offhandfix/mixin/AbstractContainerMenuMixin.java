@@ -56,6 +56,8 @@ abstract class AbstractContainerMenuMixin {
             slot.setChanged();
         }
 
+        player.getInventory().setChanged();
+        player.inventoryMenu.broadcastChanges();
         this.broadcastChanges();
         ci.cancel();
     }
