@@ -34,6 +34,7 @@ abstract class ServerGamePacketListenerImplMixin {
         }
 
         this.player.getInventory().setChanged();
+        this.player.inventoryMenu.broadcastChanges();
         this.player.containerMenu.broadcastChanges();
         ci.cancel();
     }
