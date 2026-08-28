@@ -21,6 +21,8 @@ minecraft {
         configureEach {
             workingDir = layout.projectDirectory.dir('run')
 
+            args "--mixin.config=${mod_id}.mixins.json"
+
             systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
             systemProperty 'forge.enabledGameTestNamespaces', mod_id
         }
@@ -51,6 +53,7 @@ repositories {
 dependencies {
     implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.5'
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 
 processResources {
@@ -75,4 +78,10 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+tasks.named('jar', Jar) {
+    manifest {
+        attributes['MixinConfigs'] = "${mod_id}.mixins.json"
+    }
 }

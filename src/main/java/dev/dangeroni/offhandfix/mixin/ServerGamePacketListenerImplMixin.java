@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 abstract class ServerGamePacketListenerImplMixin {
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private ServerPlayer player;
 
-    @Inject(method = "handlePlayerAction", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "handlePlayerAction", at = @At("HEAD"), cancellable = true, remap = false)
     private void offhandFix$refillOffhandBeforeSwap(ServerboundPlayerActionPacket packet, CallbackInfo ci) {
         if (packet.getAction() != ServerboundPlayerActionPacket.Action.SWAP_ITEM_WITH_OFFHAND) {
             return;

@@ -18,14 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerMenu.class)
 abstract class AbstractContainerMenuMixin {
-    @Shadow
+    @Shadow(remap = false)
     @Final
     public NonNullList<Slot> slots;
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract void broadcastChanges();
 
-    @Inject(method = "clicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "clicked", at = @At("HEAD"), cancellable = true, remap = false)
     private void offhandFix$refillOffhandBeforeVanillaSlotAction(int slotId, int button, ContainerInput containerInput, Player player, CallbackInfo ci) {
         if (!(player instanceof ServerPlayer) || slotId < 0 || slotId >= this.slots.size()) {
             return;

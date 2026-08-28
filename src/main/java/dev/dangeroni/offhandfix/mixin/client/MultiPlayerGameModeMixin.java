@@ -25,11 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiPlayerGameMode.class)
 abstract class MultiPlayerGameModeMixin {
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private ClientPacketListener connection;
 
-    @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true, remap = false)
     private void offhandFix$mirrorQuickMoveRefillLocally(int containerId, int slotId, int button, ContainerInput containerInput, Player player, CallbackInfo ci) {
         if (containerInput != ContainerInput.QUICK_MOVE) {
             return;
