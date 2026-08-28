@@ -48,19 +48,6 @@ abstract class AbstractContainerMenuMixin {
 			return;
 		}
 
-		if (quickMove) {
-			if (sourceStack.isEmpty()) {
-				slot.setByPlayer(ItemStack.EMPTY);
-				slot.onTake(player, ItemStack.EMPTY);
-				this.broadcastChanges();
-				ci.cancel();
-			} else {
-				slot.setChanged();
-			}
-
-			return;
-		}
-
 		if (sourceStack.isEmpty()) {
 			slot.setByPlayer(ItemStack.EMPTY);
 			slot.onTake(player, ItemStack.EMPTY);
@@ -68,6 +55,8 @@ abstract class AbstractContainerMenuMixin {
 			slot.setChanged();
 		}
 
+		player.getInventory().setChanged();
+		player.inventoryMenu.broadcastChanges();
 		this.broadcastChanges();
 		ci.cancel();
 	}
