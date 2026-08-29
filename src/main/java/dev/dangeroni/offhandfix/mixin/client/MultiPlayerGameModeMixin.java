@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
@@ -13,20 +14,14 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiPlayerGameMode.class)
 abstract class MultiPlayerGameModeMixin {
-    @Shadow(remap = false)
-    @Final
-    private ClientPacketListener connection;
-
-    @Inject(method = "handleInventoryMouseClick", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "handleInventoryMouseClick", at = @At("HEAD"), cancellable = true)
     private void offhandFix$mirrorQuickMoveRefillLocally(int containerId, int slotId, int button, ClickType clickType, Player player, CallbackInfo ci) {
         if (clickType != ClickType.QUICK_MOVE) {
             return;
@@ -48,6 +43,11 @@ abstract class MultiPlayerGameModeMixin {
             return;
         }
 
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        if (connection == null) {
+            return;
+        }
+
         List<ItemStack> previousStacks = this.offhandFix$snapshotStacks(menu);
         OffhandRefill.refillOffhand(offhandStack, sourceStack);
 
@@ -60,7 +60,7 @@ abstract class MultiPlayerGameModeMixin {
         player.getInventory().setChanged();
 
         Int2ObjectMap<ItemStack> changedStacks = this.offhandFix$collectChangedStacks(menu, previousStacks);
-        this.connection.send(new ServerboundContainerClickPacket(
+        connection.send(new ServerboundContainerClickPacket(
             containerId,
             menu.getStateId(),
             slotId,

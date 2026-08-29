@@ -26,6 +26,8 @@ minecraft {
 
             args "--mixin.config=${mod_id}.mixins.json"
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             property 'eventbus.api.strictRuntimeChecks', 'true'
             property 'forge.enabledGameTestNamespaces', mod_id
 
@@ -84,7 +86,14 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
+    dependsOn 'createMcpToSrg'
     options.encoding = 'UTF-8'
+    options.compilerArgs += [
+        "-AoutRefMapFile=${buildDir}/classes/java/main/${mod_id}.refmap.json",
+        "-AreobfTsrgFile=${buildDir}/createMcpToSrg/output.tsrg",
+        "-AmappingTypes=tsrg",
+        "-AdefaultObfuscationEnv=searge"
+    ]
 }
 
 tasks.named('jar', Jar) {
