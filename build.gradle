@@ -2,13 +2,13 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
-    id 'net.minecraftforge.gradle' version '[7.0.17,8)'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
 version = mod_version
 group = mod_group_id
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
@@ -17,26 +17,37 @@ base {
 }
 
 minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+
     runs {
         configureEach {
-            workingDir = layout.projectDirectory.dir('run')
+            workingDirectory = layout.projectDirectory.dir('run')
 
             args "--mixin.config=${mod_id}.mixins.json"
 
-            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
-            systemProperty 'forge.enabledGameTestNamespaces', mod_id
+            property 'eventbus.api.strictRuntimeChecks', 'true'
+            property 'forge.enabledGameTestNamespaces', mod_id
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
         }
 
-        register('client')
+        client {
+        }
 
-        register('server') {
+        server {
             args '--nogui'
         }
 
-        register('gameTestServer')
+        gameTestServer {
+        }
 
-        register('data') {
-            workingDir = layout.projectDirectory.dir('run-data')
+        data {
+            workingDirectory = layout.projectDirectory.dir('run-data')
 
             args '--mod', mod_id, '--all', '--output', layout.projectDirectory.dir('src/generated/resources'), '--existing', layout.projectDirectory.dir('src/main/resources')
         }
@@ -44,16 +55,12 @@ minecraft {
 }
 
 repositories {
-    minecraft.mavenizer(it) // In Kotlin, it = this
-    maven fg.forgeMaven
-    maven fg.minecraftLibsMaven
     mavenCentral()
 }
 
 dependencies {
-    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.5'
-    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 processResources {
@@ -81,6 +88,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.named('jar', Jar) {
+    archiveClassifier = 'forge'
+
     manifest {
         attributes['MixinConfigs'] = "${mod_id}.mixins.json"
     }

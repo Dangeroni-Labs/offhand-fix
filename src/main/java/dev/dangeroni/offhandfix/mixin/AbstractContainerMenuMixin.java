@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -26,13 +26,13 @@ abstract class AbstractContainerMenuMixin {
     public abstract void broadcastChanges();
 
     @Inject(method = "clicked", at = @At("HEAD"), cancellable = true, remap = false)
-    private void offhandFix$refillOffhandBeforeVanillaSlotAction(int slotId, int button, ContainerInput containerInput, Player player, CallbackInfo ci) {
+    private void offhandFix$refillOffhandBeforeVanillaSlotAction(int slotId, int button, ClickType clickType, Player player, CallbackInfo ci) {
         if (!(player instanceof ServerPlayer) || slotId < 0 || slotId >= this.slots.size()) {
             return;
         }
 
-        boolean quickMove = containerInput == ContainerInput.QUICK_MOVE;
-        boolean offhandSwap = containerInput == ContainerInput.SWAP && button == Inventory.SLOT_OFFHAND;
+        boolean quickMove = clickType == ClickType.QUICK_MOVE;
+        boolean offhandSwap = clickType == ClickType.SWAP && button == Inventory.SLOT_OFFHAND;
         if (!quickMove && !offhandSwap) {
             return;
         }

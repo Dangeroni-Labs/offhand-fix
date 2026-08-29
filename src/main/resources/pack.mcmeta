@@ -1,10 +1,6 @@
 {
   "pack": {
     "description": "Kossman's Offhand Fix resources",
-    "max_format": 107,
-    "min_format": [
-      107,
-      1
-    ]
+    "pack_format": 15
   }
 }

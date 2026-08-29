@@ -11,7 +11,7 @@ public final class OffhandRefill {
         return !offhandStack.isEmpty()
             && !sourceStack.isEmpty()
             && offhandStack.getMaxStackSize() > 1
-            && ItemStack.isSameItemSameComponents(offhandStack, sourceStack);
+            && ItemStack.isSameItemSameTags(offhandStack, sourceStack);
     }
 
     public static int calculateTransferAmount(ItemStack offhandStack, ItemStack sourceStack) {

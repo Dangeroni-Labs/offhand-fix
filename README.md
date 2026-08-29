@@ -1,6 +1,6 @@
 # Kossman's Offhand Fix
 
-Forge branch for Minecraft 26.2.
+Forge branch for Minecraft 1.20.1.
 
 Repository: https://github.com/Dangeroni-Labs/offhand-fix
 

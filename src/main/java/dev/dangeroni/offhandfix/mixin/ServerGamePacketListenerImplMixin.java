@@ -30,7 +30,7 @@ abstract class ServerGamePacketListenerImplMixin {
         }
 
         if (sourceStack.isEmpty()) {
-            this.player.getInventory().setSelectedItem(ItemStack.EMPTY);
+            this.player.getInventory().setItem(this.player.getInventory().selected, ItemStack.EMPTY);
         }
 
         this.player.getInventory().setChanged();
