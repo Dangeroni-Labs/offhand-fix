@@ -12,9 +12,10 @@ Kossman's Offhand Fix improves how matching item stacks interact with the offhan
 
 ## Supported versions
 
-| Minecraft | [Fabric](https://github.com/Dangeroni-Labs/offhand-fix/tree/26.2-fabric) | [NeoForge](https://github.com/Dangeroni-Labs/offhand-fix/tree/26.2-neoforge) | [Forge](https://github.com/Dangeroni-Labs/offhand-fix/tree/26.2-forge) |
+| Minecraft | Fabric | NeoForge | Forge |
 | --- | --- | --- | --- |
 | 26.2 | Yes | Yes | Yes |
+| 1.20.1 | - | - | Yes |
 
 ## Downloads
 
