@@ -15,7 +15,7 @@ Kossman's Offhand Fix improves how matching item stacks interact with the offhan
 | Minecraft | Fabric | NeoForge | Forge |
 | --- | --- | --- | --- |
 | 26.2 | Yes | Yes | Yes |
-| 1.20.1 | Yes | - | Yes |
+| 1.20.1 | Yes | Yes | Yes |
 
 ## Downloads
 
