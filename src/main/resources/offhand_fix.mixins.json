@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "dev.dangeroni.offhandfix.mixin",
-	"compatibilityLevel": "JAVA_25",
+	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"AbstractContainerMenuMixin",
 		"ServerGamePacketListenerImplMixin"

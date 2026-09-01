@@ -1,7 +1,8 @@
 package dev.dangeroni.offhandfix;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import java.util.Objects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public final class OffhandRefill {
 	private OffhandRefill() {
@@ -10,8 +11,9 @@ public final class OffhandRefill {
 	public static boolean canRefillOffhand(ItemStack offhandStack, ItemStack sourceStack) {
 		return !offhandStack.isEmpty()
 			&& !sourceStack.isEmpty()
-			&& offhandStack.getMaxStackSize() > 1
-			&& ItemStack.isSameItemSameComponents(offhandStack, sourceStack);
+			&& offhandStack.getMaxCount() > 1
+			&& ItemStack.areItemsEqual(offhandStack, sourceStack)
+			&& Objects.equals(offhandStack.getNbt(), sourceStack.getNbt());
 	}
 
 	public static int calculateTransferAmount(ItemStack offhandStack, ItemStack sourceStack) {
@@ -19,7 +21,7 @@ public final class OffhandRefill {
 			return 0;
 		}
 
-		int space = offhandStack.getMaxStackSize() - offhandStack.getCount();
+		int space = offhandStack.getMaxCount() - offhandStack.getCount();
 		if (space <= 0) {
 			return 0;
 		}
@@ -38,12 +40,12 @@ public final class OffhandRefill {
 			return 0;
 		}
 
-		offhandStack.grow(transferable);
-		sourceStack.shrink(transferable);
+		offhandStack.increment(transferable);
+		sourceStack.decrement(transferable);
 		return transferable;
 	}
 
-	public static boolean tryRefillOffhand(Player player, ItemStack sourceStack) {
-		return refillOffhand(player.getOffhandItem(), sourceStack) > 0;
+	public static boolean tryRefillOffhand(PlayerEntity player, ItemStack sourceStack) {
+		return refillOffhand(player.getOffHandStack(), sourceStack) > 0;
 	}
 }
