@@ -1,5 +1,7 @@
 package dev.dangeroni.offhandfix;
 
+import net.neoforged.fml.loading.FMLPaths;
+
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -13,5 +15,6 @@ public final class KossmansOffhandFix {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public KossmansOffhandFix(IEventBus modEventBus) {
+        OffhandFixConfig.load(FMLPaths.CONFIGDIR.get());
     }
 }

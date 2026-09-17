@@ -1,0 +1,44 @@
+// Opt-in runtime checks; validation classes/resources never enter normal jars.
+gradle.projectsEvaluated {
+    ['fabric', 'forge', 'neoforge'].each { loader ->
+        def module = rootProject.project(":${loader}")
+        def runDirectory = module.layout.buildDirectory.dir('scope-validation').get().asFile
+        if (loader == 'fabric') {
+            module.loom.runs.named('server').configure { runDir = 'build/scope-validation' }
+        } else if (loader == 'forge') {
+            module.minecraft.runs.named('server').configure { workingDir = runDirectory }
+        } else {
+            module.neoForge.runs.named('server').configure { gameDirectory = runDirectory }
+        }
+        module.sourceSets.main.java.srcDir rootProject.file('validation/java')
+        module.tasks.named('processResources').configure {
+            doLast {
+                def mixins = new File(destinationDir, 'offhand_fix.mixins.json')
+                def json = new groovy.json.JsonSlurper().parse(mixins)
+                json.mixins.add('ValidationServerMixin')
+                mixins.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
+            }
+        }
+        module.tasks.matching { it.name == 'runServer' }.configureEach {
+            timeout = java.time.Duration.ofMinutes(3)
+            workingDir = module.layout.buildDirectory.dir('scope-validation').get().asFile
+            doFirst {
+                workingDir.mkdirs()
+                new File(workingDir, 'validation-passed.txt').delete()
+                new File(workingDir, 'eula.txt').text = 'eula=true\n'
+                new File(workingDir, 'server.properties').text = 'online-mode=false\nserver-ip=127.0.0.1\nserver-port=0\nlevel-type=minecraft:flat\ngenerator-settings={"layers":[{"block":"minecraft:bedrock","height":1}],"biome":"minecraft:plains"}\nview-distance=2\nsimulation-distance=2\n'
+                def pack = new File(workingDir, 'world/datapacks/scope_validation')
+                def recipes = new File(pack, 'data/scope_validation/recipe')
+                recipes.mkdirs()
+                new File(pack, 'pack.mcmeta').text = '{"pack":{"description":"Offhand refill validation","min_format":[107,1],"max_format":[107,1]}}'
+                new File(recipes, 'bread_seven.json').text = '{"type":"minecraft:crafting_shapeless","ingredients":["minecraft:wheat"],"result":{"id":"minecraft:bread","count":7}}'
+            }
+            doLast {
+                def marker = new File(runDirectory, 'validation-passed.txt')
+                if (!marker.exists() || !marker.text.contains('SCOPE VALIDATION PASS: 213 assertions')) {
+                    throw new GradleException("${loader} server did not complete scope validation; inspect ${runDirectory}/logs/latest.log")
+                }
+            }
+        }
+    }
+}
