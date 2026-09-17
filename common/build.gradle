@@ -1,0 +1,2 @@
+// Shared sources and resources are compiled directly by each loader module.
+// This project intentionally has no Java plugin or separate mod artifact.
