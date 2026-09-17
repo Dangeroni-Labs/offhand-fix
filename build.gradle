@@ -9,7 +9,8 @@ subprojects {
         tasks.withType(Jar).configureEach {
             archiveFileName.set(provider {
                 def classifier = archiveClassifier.getOrElse('')
-                "offhand-fix-mc${project.minecraft_version}-${project.name}-${project.version}${classifier ? '-' + classifier : ''}.jar"
+                def loader = project.name == 'neoforge' ? 'neiforge' : project.name
+                "offhand-fix-mc${project.minecraft_version}-${loader}-${project.version}${classifier ? '-' + classifier : ''}.jar"
             })
         }
     }
