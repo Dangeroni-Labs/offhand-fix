@@ -117,6 +117,7 @@ idea {
 
 // Compile shared gameplay code against this loader's own Minecraft classpath.
 sourceSets.main.java.srcDir rootProject.file('common/src/main/java')
+sourceSets.main.java.srcDir rootProject.file('common/src/client/java')
 sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
 
 tasks.named('jar', Jar) {

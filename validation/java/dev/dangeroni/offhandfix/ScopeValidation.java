@@ -42,9 +42,10 @@ public final class ScopeValidation {
                 OffhandFixConfig.load(config);
                 check(OffhandFixConfig.shiftClickScope() == ShiftClickScope.PLAYER_INVENTORY_ONLY, "invalid config fallback");
             }
+            Files.writeString(config.resolve("offhand_fix.properties"), "shiftClickScope=PLAYER_INVENTORY_ONLY");
+            OffhandFixConfig.load(config);
             for (ShiftClickScope scope : ShiftClickScope.values()) {
-                Files.writeString(config.resolve("offhand_fix.properties"), "shiftClickScope=" + scope.name());
-                OffhandFixConfig.load(config);
+                if (!OffhandFixConfig.setShiftClickScope(scope)) throw new AssertionError("Could not save scope");
                 boolean enabled = scope != ShiftClickScope.DISABLED;
                 boolean external = scope == ShiftClickScope.ALL_CONTAINERS;
                 ServerPlayer player = player(server);

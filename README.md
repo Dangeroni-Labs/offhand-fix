@@ -12,20 +12,22 @@ Kossman's Offhand Fix improves how matching item stacks interact with the offhan
 
 ## Configuration
 
-Edit `config/offhand_fix.properties` and restart. `shiftClickScope` accepts:
+Use Mods -> Kossman's Offhand Fix -> Config (Fabric requires optional Mod Menu). Selections and Reset save/apply immediately; Done and Escape return to the previous screen. Manual edits to `config/offhand_fix.properties` require a restart.
+
+`shiftClickScope` accepts:
 
 - `PLAYER_INVENTORY_ONLY` - Player Inventory Only (default): refill only in the standalone inventory; crafting results remain vanilla.
 - `ALL_CONTAINERS` - All Containers: also refill incoming container stacks and crafting results; player-to-container transfers remain vanilla.
 - `DISABLED` - Disabled: all Shift-click transfers remain vanilla.
 
-This setting does not affect `F`. On multiplayer servers the server setting controls behavior; use the same setting on clients for matching prediction.
+This setting does not affect `F`.
 
 ## Supported versions
 
 | Minecraft | Fabric | NeoForge | Forge |
 | --- | --- | --- | --- |
 | 26.2 | Yes | Yes | Yes |
-| 1.20.1 | Yes | - | Yes |
+| 1.20.1 | Yes | Yes | Yes |
 
 ## Downloads
 

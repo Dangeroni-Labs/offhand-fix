@@ -4,6 +4,7 @@ plugins {
 }
 
 repositories {
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -17,11 +18,16 @@ loom {
 	mods {
 		"offhand_fix" {
 			sourceSet sourceSets.main
+			sourceSet sourceSets.client
 		}
 	}
 }
 
 dependencies {
+	clientCompileOnly 'com.terraformersmc:modmenu:20.0.2'
+	if (project.hasProperty('withModMenu')) {
+		clientRuntimeOnly 'com.terraformersmc:modmenu:20.0.2'
+	}
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
@@ -77,5 +83,6 @@ publishing {
 // Compile shared gameplay code against this loader's own Minecraft classpath.
 sourceSets.main.java.srcDir rootProject.file('common/src/main/java')
 sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
+sourceSets.client.java.srcDir rootProject.file('common/src/client/java')
 
 base { archivesName = 'offhand-fix-fabric' }
