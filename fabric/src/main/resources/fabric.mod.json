@@ -13,6 +13,7 @@
 	"icon": "assets/offhand_fix/icon.png",
 	"environment": "*",
 	"entrypoints": {
+		"modmenu": ["dev.dangeroni.offhandfix.client.OffhandFixModMenu"],
 		"main": ["dev.dangeroni.offhandfix.OffhandFixMod"]
 	},
 	"mixins": [
@@ -23,5 +24,6 @@
 		"minecraft": "~26.2",
 		"java": ">=25",
 		"fabric-api": "*"
-	}
+	},
+	"suggests": { "modmenu": ">=20.0.0 <21.0.0" }
 }

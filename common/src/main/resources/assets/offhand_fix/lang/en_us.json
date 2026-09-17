@@ -1,0 +1,11 @@
+{
+  "offhand_fix.config.title": "Kossman's Offhand Fix",
+  "offhand_fix.config.scope": "Shift-click refill scope",
+  "offhand_fix.config.scope.player_inventory_only": "Player Inventory Only",
+  "offhand_fix.config.scope.all_containers": "All Containers",
+  "offhand_fix.config.scope.disabled": "Disabled",
+  "offhand_fix.config.reset": "Reset to Default",
+  "offhand_fix.config.description": "Controls where Shift+Click can refill a matching offhand stack.",
+  "offhand_fix.config.f_note": "F-key behavior is not affected.",
+  "offhand_fix.config.save_failed": "Could not save config. Check the game log."
+}

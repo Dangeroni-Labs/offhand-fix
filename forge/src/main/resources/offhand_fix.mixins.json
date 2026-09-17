@@ -7,9 +7,6 @@
     "AbstractContainerMenuMixin",
     "ServerGamePacketListenerImplMixin"
   ],
-  "client": [
-    "client.MultiPlayerGameModeMixin"
-  ],
   "injectors": {
     "defaultRequire": 1
   },

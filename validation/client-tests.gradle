@@ -1,0 +1,36 @@
+// Client-only opt-in screen checks. Run clean buildAll afterwards for release jars.
+gradle.projectsEvaluated {
+    ['fabric', 'forge', 'neoforge'].each { loader ->
+        def module = rootProject.project(":${loader}")
+        def directory = module.layout.buildDirectory.dir('gui-validation').get().asFile
+        if (loader == 'fabric') {
+            module.sourceSets.client.java.srcDir rootProject.file('validation/client')
+            module.loom.runs.named('client').configure { runDir = 'build/gui-validation' }
+        } else {
+            module.sourceSets.main.java.srcDir rootProject.file('validation/client')
+            if (loader == 'forge') module.minecraft.runs.named('client').configure { workingDir = directory }
+            else module.neoForge.runs.named('client').configure { gameDirectory = directory }
+        }
+        module.tasks.named('processResources').configure {
+            doLast {
+                def file = new File(destinationDir, 'offhand_fix.mixins.json')
+                def json = new groovy.json.JsonSlurper().parse(file)
+                json.client = ['ValidationClientMixin']
+                file.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
+            }
+        }
+        module.tasks.matching { it.name == 'runClient' }.configureEach {
+            timeout = java.time.Duration.ofMinutes(4)
+            doFirst {
+                directory.mkdirs()
+                new File(directory, 'gui-passed.txt').delete()
+                new File(directory, 'options.txt').text = 'onboardAccessibility:false\nguiScale:2\n'
+            }
+            doLast {
+                if (!new File(directory, 'gui-passed.txt').exists()) {
+                    throw new GradleException("${loader} GUI validation did not finish; inspect ${directory}/logs/latest.log")
+                }
+            }
+        }
+    }
+}
