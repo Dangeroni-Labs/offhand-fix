@@ -1,0 +1,25 @@
+plugins {
+    id 'base'
+}
+
+subprojects {
+    version = rootProject.version
+    group = rootProject.group
+    plugins.withId('java') {
+        tasks.withType(Jar).configureEach {
+            archiveFileName.set(provider {
+                def classifier = archiveClassifier.getOrElse('')
+                "offhand-fix-mc${project.minecraft_version}-${project.name}-${project.version}${classifier ? '-' + classifier : ''}.jar"
+            })
+        }
+    }
+}
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Build all Minecraft 26.2 loader artifacts.'
+    dependsOn ':fabric:build', ':forge:build', ':neoforge:build'
+}
+
+tasks.named('build') { dependsOn 'buildAll' }
+tasks.named('clean') { dependsOn ':fabric:clean', ':forge:clean', ':neoforge:clean' }

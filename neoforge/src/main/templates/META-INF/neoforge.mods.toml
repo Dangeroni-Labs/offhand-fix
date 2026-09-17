@@ -1,0 +1,49 @@
+
+license="${mod_license}"
+
+issueTrackerURL="${mod_issues_url}"
+
+[[mods]] #mandatory
+
+modId="${mod_id}" #mandatory
+
+version="${mod_version}" #mandatory
+
+displayName="${mod_name}" #mandatory
+
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+
+displayURL="${mod_repository_url}"
+
+iconFile="assets/offhand_fix/icon.png"
+
+authors="${mod_authors}"
+
+description='''
+${mod_description}
+'''
+
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+#[[accessTransformers]]
+#file="META-INF/accesstransformer.cfg"
+
+# The coremods config file path is not configurable and is always loaded from META-INF/coremods.json
+
+[[dependencies.${mod_id}]] #optional
+    modId="neoforge" #mandatory
+    type="required" #mandatory
+    versionRange="[${neo_version},)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"
