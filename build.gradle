@@ -6,10 +6,10 @@ subprojects {
     version = rootProject.version
     group = rootProject.group
     plugins.withId('java') {
-        tasks.withType(Jar).configureEach {
+        tasks.withType(AbstractArchiveTask).configureEach {
             archiveFileName.set(provider {
                 def classifier = archiveClassifier.getOrElse('')
-                "offhand-fix-mc${project.minecraft_version}-${project.name}-${project.version}${classifier ? '-' + classifier : ''}.jar"
+                "offhand-fix-mc${project.minecraft_version}-${project.name}-${project.version}${classifier ? '-' + classifier : ''}.${archiveExtension.get()}"
             })
         }
     }
@@ -17,7 +17,7 @@ subprojects {
 
 tasks.register('buildAll') {
     group = 'build'
-    description = 'Build all Minecraft 26.2 loader artifacts.'
+    description = 'Build all Minecraft 1.20.1 loader artifacts.'
     dependsOn ':fabric:build', ':forge:build', ':neoforge:build'
 }
 

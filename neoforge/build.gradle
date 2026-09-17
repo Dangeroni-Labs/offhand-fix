@@ -1,7 +1,17 @@
+buildscript {
+    // The legacy plugin's Artifactural 3.0.17 uses Gradle internals removed in 8.11.
+    // Use the compatible implementation already required by ForgeGradle 6.
+    configurations.classpath {
+        resolutionStrategy.dependencySubstitution {
+            substitute module('net.neoforged:artifactural') using module('net.minecraftforge:artifactural:3.0.21')
+        }
+    }
+}
+
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.144'
+    id 'net.neoforged.gradle' version '[6.0.13, 6.2)'
     id 'idea'
 }
 
@@ -20,45 +30,40 @@ repositories {
 }
 
 base {
-    archivesName = "offhand-fix-neoforge"
+    archivesName = "offhand-fix"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-neoForge {
-    version = project.neo_version
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
 
     runs {
+        configureEach {
+            workingDirectory = layout.projectDirectory.dir('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            args "--mixin.config=${mod_id}.mixins.json"
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
         client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            args '--nogui'
         }
 
         data {
-            clientData()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
+            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
 }
@@ -68,6 +73,9 @@ configurations {
 }
 
 dependencies {
+    minecraft "net.neoforged:forge:${neo_version}"
+    implementation 'org.spongepowered:mixin:0.8.5'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -90,7 +98,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
     into "build/generated/sources/modMetadata"
 }
 sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {
@@ -106,7 +113,21 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' }
+    options.encoding = 'UTF-8'
+    dependsOn 'createMcpToSrg'
+    options.compilerArgs += [
+        "-AoutRefMapFile=${buildDir}/classes/java/main/${mod_id}.refmap.json",
+        "-AreobfTsrgFile=${buildDir}/createMcpToSrg/output.tsrg",
+        '-AmappingTypes=tsrg',
+        '-AdefaultObfuscationEnv=searge'
+    ]
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes['MixinConfigs'] = "${mod_id}.mixins.json"
+    }
+}
 
 idea {
     module {
@@ -115,10 +136,14 @@ idea {
     }
 }
 
-// Compile shared gameplay code against this loader's own Minecraft classpath.
+// Shared calculation and assets compile/package within each loader.
 sourceSets.main.java.srcDir rootProject.file('common/src/main/java')
 sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
 
+// Forge and NeoForge 1.20.1 both use official mappings.
+sourceSets.main.java.srcDir rootProject.file('common/src/official/java')
+
 tasks.named('jar', Jar) {
     from(rootProject.file('LICENSE')) { rename { 'LICENSE_offhand-fix' } }
+    finalizedBy 'reobfJar'
 }
