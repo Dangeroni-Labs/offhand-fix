@@ -16,7 +16,6 @@ plugins {
 }
 
 
-version = mod_version
 group = mod_group_id
 
 sourceSets.main.resources {
@@ -86,7 +85,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
-            mod_version            : mod_version,
+            mod_version            : project.version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             mod_repository_url     : mod_repository_url,
