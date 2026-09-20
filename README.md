@@ -4,11 +4,23 @@ Kossman's Offhand Fix improves how matching item stacks interact with the offhan
 
 ## Features
 
-- **Shift-click** compatible stacks to refill the offhand first
+- **Shift-click** compatible stacks in the player inventory to refill the offhand first
 - Press `F` to refill a matching offhand stack before swapping
 - Works with inventory slots and normal gameplay
 - Preserves vanilla behavior when refilling is not possible
 - Server-authoritative and multiplayer-safe
+
+## Configuration
+
+Open Mods -> Kossman's Offhand Fix -> Config. On Fabric, install the optional Mod Menu mod to show this button. Changes and Reset apply immediately; Done and Escape return to the previous screen. Manual edits to `config/offhand_fix.properties` require a restart.
+
+`shiftClickScope` accepts:
+
+- `PLAYER_INVENTORY_ONLY` (default): refill only in the standalone player inventory; crafting results remain vanilla.
+- `ALL_CONTAINERS`: also refill incoming container stacks and crafting results; player-to-container transfers remain vanilla.
+- `DISABLED`: all Shift-click transfers remain vanilla.
+
+This setting does not affect `F`.
 
 ## Supported versions
 

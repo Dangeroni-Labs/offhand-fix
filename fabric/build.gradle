@@ -4,6 +4,7 @@ plugins {
 }
 
 repositories {
+	maven { url = 'https://maven.terraformersmc.com/releases/' }
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -23,6 +24,10 @@ loom {
 }
 
 dependencies {
+	modCompileOnly 'com.terraformersmc:modmenu:7.2.2'
+	if (project.hasProperty('withModMenu')) {
+		modRuntimeOnly 'com.terraformersmc:modmenu:7.2.2'
+	}
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.minecraft_version}+build.10:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"

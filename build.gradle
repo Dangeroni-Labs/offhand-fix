@@ -9,7 +9,7 @@ subprojects {
         tasks.withType(AbstractArchiveTask).configureEach {
             archiveFileName.set(provider {
                 def classifier = archiveClassifier.getOrElse('')
-                "offhand-fix-mc${project.minecraft_version}-${project.name}-${project.version}${classifier ? '-' + classifier : ''}.${archiveExtension.get()}"
+                "offhand-fix-${project.version}-${project.name}${classifier ? '-' + classifier : ''}.${archiveExtension.get()}"
             })
         }
     }

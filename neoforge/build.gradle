@@ -141,6 +141,7 @@ sourceSets.main.resources.srcDir rootProject.file('common/src/main/resources')
 
 // Forge and NeoForge 1.20.1 both use official mappings.
 sourceSets.main.java.srcDir rootProject.file('common/src/official/java')
+sourceSets.main.java.srcDir rootProject.file('common/src/client/java')
 
 tasks.named('jar', Jar) {
     from(rootProject.file('LICENSE')) { rename { 'LICENSE_offhand-fix' } }
